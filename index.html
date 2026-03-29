@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Classe de 4e - Espace Connecté</title>
+    <!-- Chargement des polices : Fredoka pour les titres et Quicksand pour le texte -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dojo-blue: #00ADEE;
+            --dojo-green: #71C341;
+            --dojo-bg: #F5F7F9;
+            --dojo-text: #4A4A4A;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--dojo-bg);
+            color: var(--dojo-text);
+        }
+
+        h1, h2, h3, .font-fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Style spécifique ClassDojo : Très arrondi */
+        .rounded-dojo {
+            border-radius: 2rem;
+        }
+
+        .card-dojo {
+            background: white;
+            border-radius: 1.5rem;
+            border: 2px solid #E1E8ED;
+            transition: all 0.3s ease;
+        }
+
+        .card-dojo:hover {
+            border-color: var(--dojo-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        /* Animation des sections */
+        .page-section {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Barre de navigation style "Bulle" */
+        .nav-button {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .nav-button.active {
+            background-color: var(--dojo-blue);
+            color: white !important;
+        }
+
+        /* Bouton haut-parleur animé */
+        .speaker-btn {
+            background-color: white;
+            color: var(--dojo-blue);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .speaker-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .speaker-btn:hover .wave {
+            animation: wave-pulse 1s infinite;
+        }
+
+        @keyframes wave-pulse {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barre de Navigation -->
+    <nav class="bg-white py-4 px-6 sticky top-0 z-50 shadow-sm border-b-2 border-gray-100">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('accueil')">
+                <div class="bg-[#00ADEE] p-2 rounded-2xl">
+                    <i class="fas fa-rocket text-white text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-[#00ADEE] font-fredoka">Ma Super Classe</span>
+            </div>
+
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex items-center space-x-2 bg-gray-50 p-1 rounded-full border border-gray-100">
+                <button onclick="showPage('accueil')" id="btn-accueil" class="nav-button active text-gray-500 hover:text-blue-500">🏠 Accueil</button>
+                <button onclick="showPage('parents')" id="btn-parents" class="nav-button text-gray-500 hover:text-blue-500">👨‍👩‍👧 Parents</button>
+                <button onclick="showPage('eleves')" id="btn-eleves" class="nav-button text-gray-500 hover:text-blue-500">🎒 Élèves</button>
+                <button onclick="showPage('galerie')" id="btn-galerie" class="nav-button text-gray-500 hover:text-blue-500">📸 Galerie</button>
+            </div>
+
+            <button class="md:hidden text-gray-400">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- En-tête (Hero) -->
+    <header class="bg-gradient-to-r from-blue-400 to-blue-500 pt-12 pb-20 px-6 text-center text-white relative overflow-hidden">
+        <!-- Décorations de fond (bulles) -->
+        <div class="absolute top-0 left-0 w-24 h-24 bg-white/10 rounded-full -translate-x-12 -translate-y-12"></div>
+        <div class="absolute bottom-0 right-0 w-32 h-32 bg-white/10 rounded-full translate-x-16 translate-y-16"></div>
+
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+            <div class="flex items-center gap-4 mb-4">
+                <h1 class="text-4xl md:text-6xl font-bold">Bonjour la 4<sup>e</sup> !</h1>
+                <div class="speaker-btn" onclick="speakText('Bienvenue sur le site de notre classe !')" title="Écouter">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path class="wave" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                </div>
+            </div>
+            <p class="text-xl opacity-90 font-medium">L'endroit où l'on grandit et on apprend ensemble chaque jour.</p>
+        </div>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="max-w-5xl mx-auto px-6 -mt-10 mb-20">
+
+        <!-- SECTION : ACCUEIL -->
+        <section id="accueil" class="page-section active">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Flux de nouvelles -->
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-white p-6 rounded-dojo shadow-sm border-2 border-gray-100">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-white text-xl">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">M. Jean-Philippe</h3>
+                                <p class="text-xs text-gray-400 font-bold uppercase">Posté il y a 2 heures</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Quel beau travail aujourd'hui en mathématiques ! Nous avons exploré les fractions avec des pizzas en carton. Les élèves ont adoré ! 🍕
+                        </p>
+                        <div class="bg-gray-100 h-64 rounded-2xl flex items-center justify-center text-gray-400 italic">
+                            [Image de l'activité de fractions]
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-dojo shadow-sm border-2 border-gray-100">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white text-xl">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Défi de la semaine</h3>
+                                <p class="text-xs text-gray-400 font-bold uppercase">Posté hier</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">
+                            Rappel : La collecte de nourriture pour la banque alimentaire locale commence lundi. Soyons généreux !
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Barre Latérale -->
+                <div class="space-y-6">
+                    <div class="bg-[#71C341] text-white p-6 rounded-dojo shadow-lg">
+                        <h2 class="text-2xl font-bold mb-4">Calendrier 📅</h2>
+                        <ul class="space-y-3">
+                            <li class="flex items-center bg-white/20 p-3 rounded-xl">
+                                <span class="font-bold mr-3">28 Mar</span>
+                                <span class="text-sm">Sortie au parc</span>
+                            </li>
+                            <li class="flex items-center bg-white/20 p-3 rounded-xl">
+                                <span class="font-bold mr-3">02 Avr</span>
+                                <span class="text-sm">Dictée #24</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-dojo shadow-sm border-2 border-gray-100">
+                        <h3 class="font-fredoka text-xl text-blue-500 mb-4 text-center">Liens rapides</h3>
+                        <div class="grid grid-cols-1 gap-2">
+                            <a href="#" class="bg-blue-50 text-blue-600 p-3 rounded-xl font-bold text-center hover:bg-blue-100 transition">Plan de travail</a>
+                            <a href="#" class="bg-orange-50 text-orange-600 p-3 rounded-xl font-bold text-center hover:bg-orange-100 transition">Menu Cantine</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION : PARENTS -->
+        <section id="parents" class="page-section">
+            <h2 class="text-3xl font-fredoka text-center mb-10">Espace Familles</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-dojo p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-folder-open text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Documents</h3>
+                    <p class="text-sm text-gray-500 mb-4">Retrouvez les autorisations et les infos de l'école.</p>
+                    <button class="text-purple-600 font-bold hover:underline">Accéder</button>
+                </div>
+
+                <div class="card-dojo p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Message</h3>
+                    <p class="text-sm text-gray-500 mb-4">Envoyez-moi un mot via notre formulaire sécurisé.</p>
+                    <button onclick="showPage('accueil')" class="text-blue-600 font-bold hover:underline">Contacter</button>
+                </div>
+
+                <div class="card-dojo p-6 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tasks text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Suivi</h3>
+                    <p class="text-sm text-gray-500 mb-4">Consultez les objectifs pédagogiques du mois.</p>
+                    <button class="text-yellow-600 font-bold hover:underline">Voir les objectifs</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION : ÉLÈVES -->
+        <section id="eleves" class="page-section">
+            <h2 class="text-3xl font-fredoka text-center mb-10 text-[#71C341]">Portail des Élèves</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-dojo shadow-sm border-2 border-[#71C341]">
+                    <h3 class="text-2xl font-fredoka mb-6">Je veux pratiquer :</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="flex flex-col items-center p-6 bg-green-50 rounded-3xl hover:bg-green-100 transition">
+                            <i class="fas fa-calculator text-3xl text-green-500 mb-2"></i>
+                            <span class="font-bold">Maths</span>
+                        </button>
+                        <button class="flex flex-col items-center p-6 bg-blue-50 rounded-3xl hover:bg-blue-100 transition">
+                            <i class="fas fa-book text-3xl text-blue-500 mb-2"></i>
+                            <span class="font-bold">Lecture</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-dojo shadow-sm border-2 border-orange-300">
+                    <h3 class="text-2xl font-fredoka mb-4">Monstre de la semaine</h3>
+                    <div class="flex items-center justify-around py-4">
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-ghost text-4xl text-orange-500"></i>
+                            </div>
+                            <span class="font-bold">Mojo</span>
+                        </div>
+                        <p class="text-gray-600 italic text-sm w-1/2">"Mojo a aidé tout le monde à ramasser les crayons aujourd'hui ! Quel champion de l'entraide !"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION : GALERIE -->
+        <section id="galerie" class="page-section">
+            <h2 class="text-3xl font-fredoka text-center mb-10">Souvenirs de classe</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="bg-gray-200 aspect-square rounded-2xl flex items-center justify-center text-gray-400">Photo 1</div>
+                <div class="bg-gray-200 aspect-square rounded-2xl flex items-center justify-center text-gray-400">Photo 2</div>
+                <div class="bg-gray-200 aspect-square rounded-2xl flex items-center justify-center text-gray-400">Photo 3</div>
+                <div class="bg-gray-200 aspect-square rounded-2xl flex items-center justify-center text-gray-400">Photo 4</div>
+                <div class="bg-gray-200 aspect-square rounded-2xl flex items-center justify-center text-gray-400">Photo 5</div>
+                <div class="bg-gray-200 aspect-square rounded-2xl flex items-center justify-center text-gray-400">Photo 6</div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 py-12 text-center text-gray-400">
+        <p class="font-bold mb-1">Classe de 4e année - École du Petit Monde</p>
+        <p class="text-sm">Construit avec ❤️ pour les élèves et les parents</p>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Cacher les sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Afficher la bonne section
+            document.getElementById(pageId).classList.add('active');
+
+            // Gérer l'état visuel du menu
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + pageId).classList.add('active');
+
+            // Remonter en haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'fr-FR';
+                msg.rate = 0.9;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+    </script>
+</body>
+</html>
